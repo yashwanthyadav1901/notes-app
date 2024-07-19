@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   useGetNotesQuery,
   useGetNotesByTagQuery,
@@ -32,6 +32,7 @@ const NoteMain = () => {
     data: allNotes,
     isLoading: isLoadingAllNotes,
     isError: isErrorAllNotes,
+    refetch: refetchAllNotes,
   } = useGetNotesQuery();
 
   // Fetch notes by tag
@@ -39,9 +40,17 @@ const NoteMain = () => {
     data: notesByTag,
     isLoading: isLoadingNotesByTag,
     isError: isErrorNotesByTag,
+    refetch: refetchNotesByTag,
   } = useGetNotesByTagQuery(selectedTag, {
     skip: !selectedTag,
   });
+
+  useEffect(() => {
+    refetchAllNotes();
+    if (selectedTag) {
+      refetchNotesByTag();
+    }
+  }, [selectedTag, refetchAllNotes, refetchNotesByTag]);
 
   // Filter notes based on search term
   const filteredNotes =
@@ -61,6 +70,8 @@ const NoteMain = () => {
         id: noteId,
         backgroundColor: color,
       }).unwrap();
+      refetchAllNotes();
+      if (selectedTag) refetchNotesByTag();
     } catch (err) {
       console.error("Failed to update background color: ", err);
     }
@@ -71,6 +82,8 @@ const NoteMain = () => {
       await archiveNote({
         id: noteId,
       }).unwrap();
+      refetchAllNotes();
+      if (selectedTag) refetchNotesByTag();
     } catch (err) {
       console.error("Failed to archive note: ", err);
     }
@@ -81,6 +94,8 @@ const NoteMain = () => {
       await deleteNote({
         id: noteId,
       }).unwrap();
+      refetchAllNotes();
+      if (selectedTag) refetchNotesByTag();
     } catch (err) {
       console.error("Failed to delete note: ", err);
     }
