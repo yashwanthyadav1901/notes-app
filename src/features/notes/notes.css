@@ -1,0 +1,25 @@
+.note-container {
+  margin-left: 250px;
+}
+
+.form-container {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 4rem;
+  margin-left: 250px;
+}
+
+.form-addnote {
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  grid-template-columns: 1fr;
+  row-gap: 3rem;
+}
+
+.color-toggle {
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
+}
